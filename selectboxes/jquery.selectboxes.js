@@ -1,14 +1,12 @@
 /*
  *
- * Copyright (c) 2006-2009 Sam Collett (http://www.texotela.co.uk)
+ * Copyright (c) 2006-2010 Sam Collett (http://www.texotela.co.uk)
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
- * Version 2.2.4
+ * Version 2.2.5
  * Demo: http://www.texotela.co.uk/code/jquery/select/
  *
- * $LastChangedDate: 2009-02-08 00:28:12 +0000 (Sun, 08 Feb 2009) $
- * $Rev: 6185 $
  *
  */
  
@@ -44,19 +42,21 @@ $.fn.addOption = function()
 				el.cache[o[i].value] = i;
 			}
 		}
-    if (index || index == 0) {
-      //we're going to insert these starting  at a specific index...
-      //this has the side effect of el.cache[v] being the 
-      //correct value for the typeof check below
-      var ti = option;
-      for(var ii =index; ii <= oL; ii++) {
-        var tmp = el.options[ii];
-        el.options[ii] = ti;
-        o[ii] = ti;
-        el.cache[o[ii].value] = ii;
-        ti = tmp;
-      }
-    }
+		if (index || index == 0)
+		{
+ 			// we're going to insert these starting  at a specific index...
+			// this has the side effect of el.cache[v] being the 
+			// correct value for the typeof check below
+			var ti = option;
+			for(var ii =index; ii <= oL; ii++)
+			{
+				var tmp = el.options[ii];
+				el.options[ii] = ti;
+				o[ii] = ti;
+				el.cache[o[ii].value] = ii;
+				ti = tmp;
+			}
+		}
     
 		// add to cache if it isn't already
 		if(typeof el.cache[v] == "undefined") el.cache[v] = oL;
@@ -83,15 +83,19 @@ $.fn.addOption = function()
 	if(a.length >= 2)
 	{
 		if(typeof(a[1]) == "boolean")
-    {
-      sO = a[1];
-      startindex = a[2];
-    } else if(typeof(a[2]) == "boolean") {
-      sO = a[2];
-      startindex = a[1];
-    } else {
-      startindex = a[1];
-    }
+		{
+			sO = a[1];
+			startindex = a[2];
+		}
+		else if(typeof(a[2]) == "boolean")
+		{
+			sO = a[2];
+			startindex = a[1];
+		}
+		else
+		{
+			startindex = a[1];
+		}
 		if(!m)
 		{
 			v = a[0];
