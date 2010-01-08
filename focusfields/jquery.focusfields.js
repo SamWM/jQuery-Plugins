@@ -1,14 +1,11 @@
 /**
  *
- * Copyright (c) 2007 Sam Collett (http://www.texotela.co.uk)
+ * Copyright (c) 2007, 2009 Sam Collett (http://www.texotela.co.uk)
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  * 
- * Version 1.0
+ * Version 2.0
  * Demo: http://www.texotela.co.uk/code/jquery/focusfields/
- *
- * $LastChangedDate: 2007-06-19 10:29:30 +0100 (Tue, 19 Jun 2007) $
- * $Rev: 2108 $
  */
 
 (function($) {
@@ -41,8 +38,8 @@ $.fn.focusFields = $.fn.focusfields = function(oColour, oWidth, bgColour, textCo
 			oColour = oColour || "#9cc";
 			oWidth = oWidth || 2;
 			var $this = $(this);
-			this.oldbgcolour = $this.css("background-color") || "#fff";
-			this.oldtextcolour = $this.css("color") || "#000";
+			$this.data("oldbgcolor", $this.css("background-color") || "#fff")
+				.data("oldtextcolour", $this.css("color") || "#000");
 			bgColour = bgColour || this.oldbgcolour;
 			textColour = textColour || this.oldtextcolour;
 			var isIE = false;
@@ -53,32 +50,27 @@ $.fn.focusFields = $.fn.focusfields = function(oColour, oWidth, bgColour, textCo
 			{
 				var outlineElement = document.createElement("span");
 				outlineElement.className = "outline";
-				$this.focus(
+				$this.data("borderCssOff", {
+					"background-color": $this.parent().css("background-color") || "#fff",
+					"padding": oWidth + "px"
+				})
+				.data("borderCssOn", { "background-color": oColour })
+				.focus(
 					function()
 					{
-						$(this.parentNode).css(this.parentNode.borderCss.on);
+						$(this.parentNode).css($this.data("borderCssOn"));
 						$(this).css({backgroundColor: bgColour, color: textColour});
 					}
 				)
 				.blur(
 					function()
 					{
-						$(this.parentNode).css(this.parentNode.borderCss.off);
-						$(this).css({backgroundColor: this.oldbgcolour, color: this.oldtextcolour});
+						$(this.parentNode).css($this.data("borderCssOff"));
+						$(this).css({backgroundColor: $this.data("oldbgcolor"), color: $this.data("oldtextcolour")});
 					}
 				);
-				outlineElement.borderCss = {
-					off:
-					{
-						backgroundColor: $this.parent().css("background-color") || "#fff",
-						padding: oWidth + "px"
-					}
-					, on:
-					{
-						backgroundColor: oColour
-					}
-				};
-				$(outlineElement).css(outlineElement.borderCss.off);
+				
+				$(outlineElement).css($this.data("borderCssOff"));
 				// remove existing wrapper if reapplied
 				if($this.parent()[0].className == "outline")
 				{
@@ -91,18 +83,14 @@ $.fn.focusFields = $.fn.focusfields = function(oColour, oWidth, bgColour, textCo
 			else
 			{
 				// apply a margin equal to the width of the outline (to prevent overlap)
-				$this.css({margin: oWidth + "px"});
-				this.outlineCss = {
-					off:
-					{
-						outlineStyle: "solid",
-						outlineWidth: oWidth + "px"
-					}
-					, on:
-					{
-						outlineColor: oColour
-					}
-				};
+				$this.css({margin: oWidth + "px"})
+				.data("outlineCssOff", {
+					"outline-style": "solid",
+					"outline-width": oWidth + "px"
+				})
+				.data("outlineCssOn", {
+					"outline-color": oColour
+				});
 				var $parent = $this.parent(), parentBG;
 				do
 				{
@@ -112,18 +100,20 @@ $.fn.focusFields = $.fn.focusfields = function(oColour, oWidth, bgColour, textCo
 				}
 				while (parentBG == "transparent")
 				if(parentBG == "transparent") parentBG = "#fff";
-				this.outlineCss.off.outlineColor = parentBG;
-				$this.css(this.outlineCss.off)
+				$this.data("outlineCssOff", {
+					"outline-color": parentBG
+				})
+				.css($this.data("outlineCssOff"))
 				.focus(
 					function()
 					{
-						$(this).css(this.outlineCss.on).css({backgroundColor: bgColour, color: textColour});
+						$(this).css($this.data("outlineCssOn")).css({backgroundColor: bgColour, color: textColour});
 					}
 				)
 				.blur(
 					function()
 					{
-						$(this).css(this.outlineCss.off).css({backgroundColor: this.oldbgcolour, color: this.oldtextcolour});
+						$(this).css($this.data("outlineCssOff")).css({backgroundColor: $this.data("oldbgcolour"), color: $this.data("oldtextcolour")});
 					}
 				);
 			}	
