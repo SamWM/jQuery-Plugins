@@ -4,11 +4,9 @@
  * Licensed under the MIT License:
  * http://www.opensource.org/licenses/mit-license.php
  * 
- * Version 1.0
+ * Version 1.1
  * Demo: http://www.texotela.co.uk/code/jquery/numeric/
  *
- * $LastChangedDate: 2007-05-29 11:31:36 +0100 (Tue, 29 May 2007) $
- * $Rev: 2005 $
  */
  
 /*
@@ -97,9 +95,17 @@ jQuery.fn.numeric = function(decimal, callback)
 					}
 				}
 				// if key pressed is the decimal and it is not already in the field
-				if(key == decimal.charCodeAt(0) && this.value.indexOf(decimal) == -1)
+				if(key == decimal.charCodeAt(0))
 				{
-					allow = true;
+					if(!this.containsDecimal)
+					{
+						allow = true;
+						this.containsDecimal = true;
+					}
+					else
+					{
+						allow = false;
+					}
 				}
 			}
 			else
