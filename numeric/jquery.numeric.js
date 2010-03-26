@@ -1,14 +1,14 @@
 /*
  *
- * Copyright (c) 2006/2007 Sam Collett (http://www.texotela.co.uk)
- * Licensed under the MIT License:
- * http://www.opensource.org/licenses/mit-license.php
+ * Copyright (c) 2006-2010 Sam Collett (http://www.texotela.co.uk)
+ * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * 
- * Version 1.1
+ * Version 1.1.1
  * Demo: http://www.texotela.co.uk/code/jquery/numeric/
  *
  */
- 
+(function($) {
 /*
  * Allows only valid characters to be entered into input boxes.
  * Note: does not validate that the final text is a valid number
@@ -23,7 +23,7 @@
  * @example  $(".numeric").numeric(null, callback);
  *
  */
-jQuery.fn.numeric = function(decimal, callback)
+$.fn.numeric = function(decimal, callback)
 {
 	decimal = decimal || ".";
 	callback = typeof callback == "function" ? callback : function(){};
@@ -118,7 +118,7 @@ jQuery.fn.numeric = function(decimal, callback)
 	.blur(
 		function()
 		{
-			var val = jQuery(this).val();
+			var val = $(this).val();
 			if(val != "")
 			{
 				var re = new RegExp("^\\d+$|\\d*" + decimal + "\\d+");
@@ -130,4 +130,6 @@ jQuery.fn.numeric = function(decimal, callback)
 		}
 	);
 	return this;
-}
+};
+
+})(jQuery);
