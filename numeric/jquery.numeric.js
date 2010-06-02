@@ -97,10 +97,9 @@ $.fn.numeric = function(decimal, callback)
 				// if key pressed is the decimal and it is not already in the field
 				if(key == decimal.charCodeAt(0))
 				{
-					if(!this.containsDecimal)
+					if(this.value.indexOf(decimal) == -1)
 					{
 						allow = true;
-						this.containsDecimal = true;
 					}
 					else
 					{
