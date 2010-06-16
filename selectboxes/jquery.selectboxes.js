@@ -27,7 +27,7 @@
  */
 $.fn.addOption = function()
 {
-	var add = function(el, v, t, sO)
+	var add = function(el, v, t, sO, index)
 	{
 		var option = document.createElement("option");
 		option.value = v, option.text = t;
@@ -44,6 +44,20 @@ $.fn.addOption = function()
 				el.cache[o[i].value] = i;
 			}
 		}
+    if (index || index == 0) {
+      //we're going to insert these starting  at a specific index...
+      //this has the side effect of el.cache[v] being the 
+      //correct value for the typeof check below
+      var ti = option;
+      for(var ii =index; ii <= oL; ii++) {
+        var tmp = el.options[ii];
+        el.options[ii] = ti;
+        o[ii] = ti;
+        el.cache[o[ii].value] = ii;
+        ti = tmp;
+      }
+    }
+    
 		// add to cache if it isn't already
 		if(typeof el.cache[v] == "undefined") el.cache[v] = oL;
 		el.options[el.cache[v]] = option;
@@ -68,8 +82,16 @@ $.fn.addOption = function()
 	}
 	if(a.length >= 2)
 	{
-		if(typeof(a[1]) == "boolean") sO = a[1];
-		else if(typeof(a[2]) == "boolean") sO = a[2];
+		if(typeof(a[1]) == "boolean")
+    {
+      sO = a[1];
+      startindex = a[2];
+    } else if(typeof(a[2]) == "boolean") {
+      sO = a[2];
+      startindex = a[1];
+    } else {
+      startindex = a[1];
+    }
 		if(!m)
 		{
 			v = a[0];
@@ -84,12 +106,13 @@ $.fn.addOption = function()
 			{
 				for(var item in items)
 				{
-					add(this, item, items[item], sO);
+					add(this, item, items[item], sO, startindex);
+					startindex += 1;
 				}
 			}
 			else
 			{
-				add(this, v, t, sO);
+				add(this, v, t, sO, startindex);
 			}
 		}
 	);
