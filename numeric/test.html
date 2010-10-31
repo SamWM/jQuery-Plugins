@@ -8,9 +8,20 @@
 	<form>
 		Numbers only:
 		<input class="numeric" type="text" />
+		Integers only:
+		<input class="integer" type="text" />
+		<a href="#" id="remove">Remove numeric</a>
 	</form>
 	<script type="text/javascript">
 	$(".numeric").numeric();
+	$(".integer").numeric(false, function() { alert("Integers only"); this.value = ""; this.focus(); });
+	$("#remove").click(
+		function(e)
+		{
+			e.preventDefault();
+			$(".numeric,.integer").removeNumeric();
+		}
+	);
 	</script>
 </body>
 </html>
