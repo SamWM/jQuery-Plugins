@@ -1,10 +1,10 @@
 /*
  *
- * Copyright (c) 2006-2010 Sam Collett (http://www.texotela.co.uk)
+ * Copyright (c) 2006-2011 Sam Collett (http://www.texotela.co.uk)
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * 
- * Version 1.2
+ * Version 1.2.1
  * Demo: http://www.texotela.co.uk/code/jquery/numeric/
  *
  */
@@ -59,7 +59,7 @@ $.fn.numeric.keypress = function(e)
 	if(key < 48 || key > 57)
 	{
 		/* '-' only allowed at start */
-		if(key == 45 && this.value.length == 0) return true;
+		if(this.value.indexOf("-") != 0 && key == 45 && (this.value.length == 0 || ($.fn.getSelectionStart(this)) == 0)) return true;
 		/* only one decimal separator allowed */
 		if(decimal && key == decimal.charCodeAt(0) && this.value.indexOf(decimal) != -1)
 		{
@@ -137,6 +137,18 @@ $.fn.numeric.blur = function()
 $.fn.removeNumeric = function()
 {
 	return this.data("numeric.decimal", null).data("numeric.callback", null).unbind("keypress", $.fn.numeric.keypress).unbind("blur", $.fn.numeric.blur);
+}
+
+// Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
+$.fn.getSelectionStart = function(o)
+{
+	if (o.createTextRange)
+	{
+		var r = document.selection.createRange().duplicate();
+		r.moveEnd('character', o.value.length);
+		if (r.text == '') return o.value.length;
+		return o.value.lastIndexOf(r.text);
+	} else return o.selectionStart;
 }
 
 })(jQuery);
