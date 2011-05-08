@@ -10,16 +10,22 @@
 		<input class="numeric" type="text" />
 		Integers only:
 		<input class="integer" type="text" />
+		No negative values:
+		<input class="positive" type="text" />
+		No negative values (integer only):
+		<input class="positive-integer" type="text" />
 		<a href="#" id="remove">Remove numeric</a>
 	</form>
 	<script type="text/javascript">
 	$(".numeric").numeric();
 	$(".integer").numeric(false, function() { alert("Integers only"); this.value = ""; this.focus(); });
+	$(".positive").numeric({ negative: false }, function() { alert("No negative values"); this.value = ""; this.focus(); });
+	$(".positive-integer").numeric({ decimal: false, negative: false }, function() { alert("Positive integers only"); this.value = ""; this.focus(); });
 	$("#remove").click(
 		function(e)
 		{
 			e.preventDefault();
-			$(".numeric,.integer").removeNumeric();
+			$(".numeric,.integer,.positive").removeNumeric();
 		}
 	);
 	</script>
