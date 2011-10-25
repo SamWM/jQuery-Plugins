@@ -74,7 +74,7 @@ $.fn.addOption = function()
 	// multiple items
 	var m = false;
 	// other variables
-	var items, v, t;
+	var items, v, t, startindex = 0;
 	if(typeof(a[0]) == "object")
 	{
 		m = true;
