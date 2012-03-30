@@ -228,7 +228,7 @@ $.fn.numeric.blur = function()
 	var val = this.value;
 	if(val != "")
 	{
-		var re = new RegExp("^\\d+$|\\d*" + decimal + "\\d+");
+		var re = new RegExp("^\\d+$|^\\d*" + decimal + "\\d+$");
 		if(!re.exec(val))
 		{
 			callback.apply(this);
