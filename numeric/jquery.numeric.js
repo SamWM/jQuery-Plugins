@@ -19,7 +19,7 @@
  * @param    callback     A function that runs if the number is not valid (fires onblur)
  * @author   Sam Collett (http://www.texotela.co.uk)
  * @example  $(".numeric").numeric();
- * @example  $(".numeric").numeric(","); // use , as separater
+ * @example  $(".numeric").numeric(","); // use , as separator
  * @example  $(".numeric").numeric({ decimal : "," }); // use , as separator
  * @example  $(".numeric").numeric({ negative : false }); // do not allow negative values
  * @example  $(".numeric").numeric(null, callback); // use default values, pass on the 'callback' function
@@ -33,16 +33,16 @@ $.fn.numeric = function(config, callback)
 	}
 	config = config || {};
 	// if config.negative undefined, set to true (default is to allow negative numbers)
-	if(typeof config.negative == "undefined") config.negative = true;
+	if(typeof config.negative == "undefined") { config.negative = true; }
 	// set decimal point
 	var decimal = (config.decimal === false) ? "" : config.decimal || ".";
 	// allow negatives
 	var negative = (config.negative === true) ? true : false;
 	// callback function
-	var callback = typeof callback == "function" ? callback : function(){};
+	callback = (typeof(callback) == "function" ? callback : function() {});
 	// set data and methods
 	return this.data("numeric.decimal", decimal).data("numeric.negative", negative).data("numeric.callback", callback).keypress($.fn.numeric.keypress).keyup($.fn.numeric.keyup).blur($.fn.numeric.blur);
-}
+};
 
 $.fn.numeric.keypress = function(e)
 {
@@ -62,22 +62,22 @@ $.fn.numeric.keypress = function(e)
 	}
 	var allow = false;
 	// allow Ctrl+A
-	if((e.ctrlKey && key == 97 /* firefox */) || (e.ctrlKey && key == 65) /* opera */) return true;
+	if((e.ctrlKey && key == 97 /* firefox */) || (e.ctrlKey && key == 65) /* opera */) { return true; }
 	// allow Ctrl+X (cut)
-	if((e.ctrlKey && key == 120 /* firefox */) || (e.ctrlKey && key == 88) /* opera */) return true;
+	if((e.ctrlKey && key == 120 /* firefox */) || (e.ctrlKey && key == 88) /* opera */) { return true; }
 	// allow Ctrl+C (copy)
-	if((e.ctrlKey && key == 99 /* firefox */) || (e.ctrlKey && key == 67) /* opera */) return true;
+	if((e.ctrlKey && key == 99 /* firefox */) || (e.ctrlKey && key == 67) /* opera */) { return true; }
 	// allow Ctrl+Z (undo)
-	if((e.ctrlKey && key == 122 /* firefox */) || (e.ctrlKey && key == 90) /* opera */) return true;
+	if((e.ctrlKey && key == 122 /* firefox */) || (e.ctrlKey && key == 90) /* opera */) { return true; }
 	// allow or deny Ctrl+V (paste), Shift+Ins
-	if((e.ctrlKey && key == 118 /* firefox */) || (e.ctrlKey && key == 86) /* opera */
-	|| (e.shiftKey && key == 45)) return true;
+	if((e.ctrlKey && key == 118 /* firefox */) || (e.ctrlKey && key == 86) /* opera */ ||
+	  (e.shiftKey && key == 45)) { return true; }
 	// if a number was not pressed
 	if(key < 48 || key > 57)
 	{
 	  var value = $(this).val();
 		/* '-' only allowed at start and if negative numbers allowed */
-		if(value.indexOf("-") != 0 && negative && key == 45 && (value.length == 0 || ($.fn.getSelectionStart(this)) == 0)) return true;
+		if(value.indexOf("-") !== 0 && negative && key == 45 && (value.length === 0 || parseInt($.fn.getSelectionStart(this), 10) === 0)) { return true; }
 		/* only one decimal separator allowed */
 		if(decimal && key == decimal.charCodeAt(0) && value.indexOf(decimal) != -1)
 		{
@@ -104,14 +104,14 @@ $.fn.numeric.keypress = function(e)
 			if(typeof e.charCode != "undefined")
 			{
 				// special keys have 'keyCode' and 'which' the same (e.g. backspace)
-				if(e.keyCode == e.which && e.which != 0)
+				if(e.keyCode == e.which && e.which !== 0)
 				{
 					allow = true;
 					// . and delete share the same code, don't allow . (will be set to true later if it is the decimal point)
-					if(e.which == 46) allow = false;
+					if(e.which == 46) { allow = false; }
 				}
 				// or keyCode != 0 and 'charCode'/'which' = 0
-				else if(e.keyCode != 0 && e.charCode == 0 && e.which == 0)
+				else if(e.keyCode !== 0 && e.charCode === 0 && e.which === 0)
 				{
 					allow = true;
 				}
@@ -135,7 +135,7 @@ $.fn.numeric.keypress = function(e)
 		allow = true;
 	}
 	return allow;
-}
+};
 
 $.fn.numeric.keyup = function(e)
 {
@@ -149,12 +149,12 @@ $.fn.numeric.keyup = function(e)
 		var negative = $.data(this, "numeric.negative");
 		
 		// prepend a 0 if necessary
-		if(decimal != "")
+		if(decimal !== "" && decimal !== null)
 		{
 			// find decimal point
 			var dot = val.indexOf(decimal);
 			// if dot at start, add 0 before
-			if(dot == 0)
+			if(dot === 0)
 			{
 				this.value = "0" + val;
 			}
@@ -175,12 +175,12 @@ $.fn.numeric.keyup = function(e)
 		{
 			var ch = val.charAt(i);
 			// remove '-' if it is in the wrong place
-			if(i != 0 && ch == "-")
+			if(i !== 0 && ch == "-")
 			{
 				val = val.substring(0, i) + val.substring(i + 1);
 			}
 			// remove character if it is at the start, a '-' and negatives aren't allowed
-			else if(i == 0 && !negative && ch == "-")
+			else if(i === 0 && !negative && ch == "-")
 			{
 				val = val.substring(1);
 			}
@@ -205,13 +205,13 @@ $.fn.numeric.keyup = function(e)
 		var firstDecimal = val.indexOf(decimal);
 		if(firstDecimal > 0)
 		{
-			for(var i = length - 1; i > firstDecimal; i--)
+			for(var k = length - 1; k > firstDecimal; k--)
 			{
-				var ch = val.charAt(i);
+				var chch = val.charAt(k);
 				// remove decimal character
-				if(ch == decimal)
+				if(chch == decimal)
 				{
-					val = val.substring(0, i) + val.substring(i + 1);
+					val = val.substring(0, k) + val.substring(k + 1);
 				}
 			}
 		}
@@ -219,14 +219,14 @@ $.fn.numeric.keyup = function(e)
 		this.value = val;
 		$.fn.setSelection(this, carat);
 	}
-}
+};
 
 $.fn.numeric.blur = function()
 {
 	var decimal = $.data(this, "numeric.decimal");
 	var callback = $.data(this, "numeric.callback");
 	var val = this.value;
-	if(val != "")
+	if(val !== "")
 	{
 		var re = new RegExp("^\\d+$|^\\d*" + decimal + "\\d+$");
 		if(!re.exec(val))
@@ -234,12 +234,12 @@ $.fn.numeric.blur = function()
 			callback.apply(this);
 		}
 	}
-}
+};
 
 $.fn.removeNumeric = function()
 {
 	return this.data("numeric.decimal", null).data("numeric.negative", null).data("numeric.callback", null).unbind("keypress", $.fn.numeric.keypress).unbind("blur", $.fn.numeric.blur);
-}
+};
 
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
 $.fn.getSelectionStart = function(o)
@@ -248,16 +248,16 @@ $.fn.getSelectionStart = function(o)
 	{
 		var r = document.selection.createRange().duplicate();
 		r.moveEnd('character', o.value.length);
-		if (r.text == '') return o.value.length;
+		if (r.text === '') { return o.value.length; }
 		return o.value.lastIndexOf(r.text);
-	} else return o.selectionStart;
-}
+	} else { return o.selectionStart; }
+};
 
 // set the selection, o is the object (input), p is the position ([start, end] or just start)
 $.fn.setSelection = function(o, p)
 {
 	// if p is number, start and end are the same
-	if(typeof p == "number") p = [p, p];
+	if(typeof p == "number") { p = [p, p]; }
 	// only set if p is an array of length 2
 	if(p && p.constructor == Array && p.length == 2)
 	{
@@ -275,6 +275,6 @@ $.fn.setSelection = function(o, p)
 			o.setSelectionRange(p[0], p[1]);
 		}
 	}
-}
+};
 
 })(jQuery);
