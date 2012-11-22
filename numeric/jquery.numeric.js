@@ -139,7 +139,7 @@ $.fn.numeric.keypress = function(e)
 
 $.fn.numeric.keyup = function(e)
 {
-	var val = $(this).value;
+	var val = $(this).val();
 	if(val && val.length > 0)
 	{
 		// get carat (cursor) position
