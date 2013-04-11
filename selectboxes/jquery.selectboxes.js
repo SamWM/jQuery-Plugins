@@ -110,8 +110,10 @@ $.fn.addOption = function()
 			{
 				for(var item in items)
 				{
-					add(this, item, items[item], sO, startindex);
-					startindex += 1;
+					if(items.hasOwnProperty(item)){
+						add(this, item, items[item], sO, startindex);
+						startindex += 1;
+					}
 				}
 			}
 			else
