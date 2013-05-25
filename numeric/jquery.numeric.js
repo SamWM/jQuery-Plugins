@@ -144,6 +144,7 @@ $.fn.numeric.keyup = function(e)
 	{
 		// get carat (cursor) position
 		var carat = $.fn.getSelectionStart(this);
+		var selectionEnd = $.fn.getSelectionEnd(this);
 		// get decimal character and determine if negatives are allowed
 		var decimal = $.data(this, "numeric.decimal");
 		var negative = $.data(this, "numeric.negative");
@@ -217,7 +218,7 @@ $.fn.numeric.keyup = function(e)
 		}
 		// set the value and prevent the cursor moving to the end
 		this.value = val;
-		$.fn.setSelection(this, carat);
+		$.fn.setSelection(this, [carat, selectionEnd]);
 	}
 };
 
@@ -252,6 +253,16 @@ $.fn.getSelectionStart = function(o)
 		return o.value.lastIndexOf(r.text);
 	} else { return o.selectionStart; }
 };
+
+// Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
+$.fn.getSelectionEnd = function(o)
+{
+	if (o.createTextRange) {
+		var r = document.selection.createRange().duplicate()
+		r.moveStart('character', -o.value.length)
+		return r.text.length
+	} else return o.selectionEnd
+}
 
 // set the selection, o is the object (input), p is the position ([start, end] or just start)
 $.fn.setSelection = function(o, p)
