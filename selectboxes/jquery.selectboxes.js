@@ -108,13 +108,17 @@ $.fn.addOption = function()
 			if(this.nodeName.toLowerCase() != "select") return;
 			if(m)
 			{
-				for(var item in items)
-				{
-					if(items.hasOwnProperty(item)){
-						add(this, item, items[item], sO, startindex);
-						startindex += 1;
-					}
-				}
+				var sel = this;
+				jQuery.each(items, function(val, text){
+						if(typeof(text) == "object"){
+							jQuery.each(text, function(k,v){
+								val = k;
+								text = v;
+							});
+						}
+						add(sel, val, text, sO, startindex);
+						startindex += 1; 
+				});
 			}
 			else
 			{
