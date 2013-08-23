@@ -110,14 +110,14 @@ $.fn.addOption = function()
 			{
 				var sel = this;
 				jQuery.each(items, function(val, text){
-						if(typeof(text) == "object"){
-							jQuery.each(text, function(k,v){
-								val = k;
-								text = v;
-							});
-						}
-						add(sel, val, text, sO, startindex);
-						startindex += 1; 
+					if(typeof(text) == "object"){
+						jQuery.each(text, function(k,v){
+							val = k;
+							text = v;
+						});
+					}
+					add(sel, val, text, sO, startindex);
+					startindex += 1; 
 				});
 			}
 			else
