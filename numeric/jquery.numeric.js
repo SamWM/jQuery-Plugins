@@ -245,7 +245,10 @@ $.fn.removeNumeric = function()
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
 $.fn.getSelectionStart = function(o)
 {
-	if (o.createTextRange)
+	if(o.type === "number"){
+		return undefined;
+	}
+	else if (o.createTextRange)
 	{
 		var r = document.selection.createRange().duplicate();
 		r.moveEnd('character', o.value.length);
@@ -257,7 +260,10 @@ $.fn.getSelectionStart = function(o)
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
 $.fn.getSelectionEnd = function(o)
 {
-	if (o.createTextRange) {
+	if(o.type === "number"){
+		return undefined;
+	}
+	else if (o.createTextRange) {
 		var r = document.selection.createRange().duplicate()
 		r.moveStart('character', -o.value.length)
 		return r.text.length
@@ -272,7 +278,10 @@ $.fn.setSelection = function(o, p)
 	// only set if p is an array of length 2
 	if(p && p.constructor == Array && p.length == 2)
 	{
-		if (o.createTextRange)
+		if(o.type === "number") {
+			o.focus();
+		}
+		else if (o.createTextRange)
 		{
 			var r = o.createTextRange();
 			r.collapse(true);
