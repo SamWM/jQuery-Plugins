@@ -251,7 +251,10 @@ $.fn.getSelectionStart = function(o)
 		r.moveEnd('character', o.value.length);
 		if (r.text === '') { return o.value.length; }
 		return o.value.lastIndexOf(r.text);
-	} else { return o.selectionStart; }
+	} else {
+        try { return o.selectionStart; }
+        catch(e) { return 0; }
+    }
 };
 
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
@@ -280,11 +283,16 @@ $.fn.setSelection = function(o, p)
 			r.moveEnd('character', p[1]);
 			r.select();
 		}
-		else if(o.setSelectionRange)
-		{
-			o.focus();
-			o.setSelectionRange(p[0], p[1]);
-		}
+		else {
+            o.focus();
+            try{
+                if(o.setSelectionRange)
+                {
+                    o.setSelectionRange(p[0], p[1]);
+                }
+            } catch(e) {
+            }
+        }
 	}
 };
 
