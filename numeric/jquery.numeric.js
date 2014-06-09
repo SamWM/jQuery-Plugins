@@ -259,7 +259,7 @@ $.fn.getSelectionStart = function(o)
 		if (r.text == '') return o.value.length;
 
 		return o.value.lastIndexOf(r.text);
-	} else return o.selectionStart;
+	} else { return o.selectionStart; }
 };
 
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
