@@ -260,7 +260,7 @@ $.fn.getSelectionStart = function(o)
 
 		return o.value.lastIndexOf(r.text);
 	} else return o.selectionStart;
-}
+};
 
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
 $.fn.getSelectionEnd = function(o)
