@@ -77,9 +77,9 @@ $.fn.numeric.keypress = function(e)
 	{
 	  var value = $(this).val();
 		/* '-' only allowed at start and if negative numbers allowed */
-		if(value.indexOf("-") !== 0 && negative && key == 45 && (value.length === 0 || parseInt($.fn.getSelectionStart(this), 10) === 0)) { return true; }
+		if($.inArray('-', value.split('')) !== 0 && negative && key == 45 && (value.length === 0 || parseInt($.fn.getSelectionStart(this), 10) === 0)) { return true; }
 		/* only one decimal separator allowed */
-		if(decimal && key == decimal.charCodeAt(0) && value.indexOf(decimal) != -1)
+		if(decimal && key == decimal.charCodeAt(0) && $.inArray(decimal, value.split('')) != -1)
 		{
 			allow = false;
 		}
@@ -120,7 +120,7 @@ $.fn.numeric.keypress = function(e)
 		// if key pressed is the decimal and it is not already in the field
 		if(decimal && key == decimal.charCodeAt(0))
 		{
-			if(value.indexOf(decimal) == -1)
+			if($.inArray(decimal, value.split('')) == -1)
 			{
 				allow = true;
 			}
@@ -153,7 +153,7 @@ $.fn.numeric.keyup = function(e)
 		if(decimal !== "" && decimal !== null)
 		{
 			// find decimal point
-			var dot = val.indexOf(decimal);
+			var dot = $.inArray(decimal, val.split(''));
 			// if dot at start, add 0 before
 			if(dot === 0)
 			{
@@ -203,7 +203,7 @@ $.fn.numeric.keyup = function(e)
 			}
 		}
 		// remove extra decimal characters
-		var firstDecimal = val.indexOf(decimal);
+		var firstDecimal = $.inArray(decimal, val.split(''));
 		if(firstDecimal > 0)
 		{
 			for(var k = length - 1; k > firstDecimal; k--)
