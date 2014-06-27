@@ -247,9 +247,17 @@ $.fn.getSelectionStart = function(o)
 {
 	if (o.createTextRange)
 	{
-		var r = document.selection.createRange().duplicate();
-		r.moveEnd('character', o.value.length);
-		if (r.text === '') { return o.value.length; }
+		var r;
+        if(typeof document.selection == "undefined") {
+            //On IE < 9 && IE >= 11 : "document.selection" is deprecated and you should use "document.getSelection()"
+            //https://github.com/SamWM/jQuery-Plugins/issues/62
+            r = document.getSelection();
+        } else {
+            r = document.selection.createRange().duplicate();
+            r.moveEnd('character', o.value.length);
+        }
+		if (r.text == '') return o.value.length;
+
 		return o.value.lastIndexOf(r.text);
 	} else { return o.selectionStart; }
 };
