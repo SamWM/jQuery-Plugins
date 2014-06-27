@@ -158,11 +158,15 @@ $.fn.numeric.keyup = function(e)
 			if(dot === 0)
 			{
 				this.value = "0" + val;
+				carat++;
+            			selectionEnd++;
 			}
 			// if dot at position 1, check if there is a - symbol before it
 			if(dot == 1 && val.charAt(0) == "-")
 			{
 				this.value = "-0" + val.substring(1);
+				carat++;
+            			selectionEnd++;
 			}
 			val = this.value;
 		}
