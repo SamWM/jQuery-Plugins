@@ -1,10 +1,10 @@
 /*
  *
- * Copyright (c) 2006-2011 Sam Collett (http://www.texotela.co.uk)
+ * Copyright (c) 2006-2014 Sam Collett (http://www.texotela.co.uk)
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  * 
- * Version 1.3.1
+ * Version 1.4
  * Demo: http://www.texotela.co.uk/code/jquery/numeric/
  *
  */
