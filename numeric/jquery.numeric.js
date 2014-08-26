@@ -257,7 +257,7 @@ $.fn.numeric.blur = function()
 	var callback = $.data(this, "numeric.callback");
 	var negative = $.data(this, "numeric.negative");
 	var val = this.value;
-	if(val !== "" && decimal)
+	if(val !== "")
 	{
 		var re = new RegExp(negative?"-?":"" + "^\\d+$|^\\d*" + decimal + "\\d+$");
 		if(!re.exec(val))
