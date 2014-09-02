@@ -252,17 +252,10 @@ $.fn.getSelectionStart = function(o)
 	if(o.type === "number"){
 		return undefined;
 	}
-	else if (o.createTextRange)
+	else if (o.createTextRange && document.selection)
 	{
-		var r;
-        if(typeof document.selection == "undefined") {
-            //On IE < 9 && IE >= 11 : "document.selection" is deprecated and you should use "document.getSelection()"
-            //https://github.com/SamWM/jQuery-Plugins/issues/62
-            r = document.getSelection();
-        } else {
-            r = document.selection.createRange().duplicate();
-            r.moveEnd('character', o.value.length);
-        }
+        var r = document.selection.createRange().duplicate();
+        r.moveEnd('character', o.value.length);
 		if (r.text == '') return o.value.length;
 
 		return o.value.lastIndexOf(r.text);
@@ -278,7 +271,7 @@ $.fn.getSelectionEnd = function(o)
 	if(o.type === "number"){
 		return undefined;
 	}
-	else if (o.createTextRange) {
+	else if (o.createTextRange && document.selection) {
 		var r = document.selection.createRange().duplicate()
 		r.moveStart('character', -o.value.length)
 		return r.text.length
@@ -301,7 +294,7 @@ $.fn.setSelection = function(o, p)
 			var r = o.createTextRange();
 			r.collapse(true);
 			r.moveStart('character', p[0]);
-			r.moveEnd('character', p[1]);
+			r.moveEnd('character', p[1] - p[0]);
 			r.select();
 		}
 		else {
