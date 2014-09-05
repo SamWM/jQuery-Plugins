@@ -284,7 +284,7 @@ $.fn.getSelectionStart = function(o)
         r.moveEnd('character', o.value.length);
 		if (r.text == '') return o.value.length;
 
-		return o.value.lastIndexOf(r.text);
+		return Math.max(0, o.value.lastIndexOf(r.text));
 	} else {
         try { return o.selectionStart; }
         catch(e) { return 0; }
