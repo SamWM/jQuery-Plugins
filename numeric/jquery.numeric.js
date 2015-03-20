@@ -8,7 +8,13 @@
  * Demo: http://www.texotela.co.uk/code/jquery/numeric/
  *
  */
-(function($) {
+(function(factory){
+	if(typeof define === 'function' && define.amd){
+		define(['jquery'], factory);
+	}else{
+        factory(window.jQuery);
+    }
+}(function($) {
 /*
  * Allows only valid characters to be entered into input boxes.
  * Note: fixes value when pasting via Ctrl+V, but not when using the mouse to paste
@@ -336,4 +342,4 @@ $.fn.setSelection = function(o, p)
 	}
 };
 
-})(jQuery);
+}));
