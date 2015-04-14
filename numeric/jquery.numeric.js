@@ -146,8 +146,10 @@ $.fn.numeric.keypress = function(e)
         // remove extra decimal places
  		if(decimal && decimalPlaces > 0)
  		{
+            var selectionStart = $.fn.getSelectionStart(this);
+            var selectionEnd = $.fn.getSelectionEnd(this);
             var dot = $.inArray(decimal, $(this).val().split(''));
-            if (dot >= 0 && $(this).val().length > dot + decimalPlaces) {
+            if (selectionStart === selectionEnd && dot >= 0 && selectionStart > dot && $(this).val().length > dot + decimalPlaces) {
                 allow = false;
             }
         }
