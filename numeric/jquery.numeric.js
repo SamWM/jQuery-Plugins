@@ -70,6 +70,10 @@ $.fn.numeric.keypress = function(e)
 	{
 		return false;
 	}
+	//dont allow #, $, %
+	else if(key == 35 || key == 36 || key == 37){
+		return false;
+	}
 	var allow = false;
 	// allow Ctrl+A
 	if((e.ctrlKey && key == 97 /* firefox */) || (e.ctrlKey && key == 65) /* opera */) { return true; }
