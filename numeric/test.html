@@ -21,6 +21,12 @@
         Numbers with up to 2 decimal places:
 		<input class="decimal-2-places" type="text" />
         <br/><br/>
+        Alternative (,) changes to standard (.) decimal separator:
+		<input class="alternative-decimal-separator" type="text" />
+        <br/><br/>
+        Reverse change from alternative (.) to standard (,) decimal separator:
+		<input class="alternative-decimal-separator-reverse" type="text" />
+        <br/><br/>
 		<a href="#" id="remove">Remove numeric</a>
 	</form>
 	<script type="text/javascript">
@@ -28,12 +34,14 @@
 	$(".integer").numeric(false, function() { alert("Integers only"); this.value = ""; this.focus(); });
 	$(".positive").numeric({ negative: false }, function() { alert("No negative values"); this.value = ""; this.focus(); });
 	$(".positive-integer").numeric({ decimal: false, negative: false }, function() { alert("Positive integers only"); this.value = ""; this.focus(); });
-    $(".decimal-2-places").numeric({ decimalPlaces: 2 });
+	$(".decimal-2-places").numeric({ decimalPlaces: 2 });
+	$(".alternative-decimal-separator").numeric({ altDecimal: "," });
+	$(".alternative-decimal-separator-reverse").numeric({ altDecimal: ".", decimal : "," });
 	$("#remove").click(
 		function(e)
 		{
 			e.preventDefault();
-			$(".numeric,.integer,.positive,.positive-integer,.decimal-2-places").removeNumeric();
+			$(".numeric,.integer,.positive,.positive-integer,.decimal-2-places,.alternative-decimal-separator,.alternative-decimal-separator-reverse").removeNumeric();
 		}
 	);
 	</script>
