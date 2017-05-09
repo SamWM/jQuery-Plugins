@@ -27,6 +27,7 @@
  * @example  $(".numeric").numeric();
  * @example  $(".numeric").numeric(","); // use , as separator
  * @example  $(".numeric").numeric({ decimal : "," }); // use , as separator
+ * @example  $(".numeric").numeric({ altDecimal : "," }); // accept , as alternative separator, but use . as separator in output
  * @example  $(".numeric").numeric({ negative : false }); // do not allow negative values
  * @example  $(".numeric").numeric({ decimalPlaces : 2 }); // only allow 2 decimal places
  * @example  $(".numeric").numeric(null, callback); // use default values, pass on the 'callback' function
@@ -43,14 +44,16 @@ $.fn.numeric = function(config, callback)
 	if(typeof config.negative == "undefined") { config.negative = true; }
 	// set decimal point
 	var decimal = (config.decimal === false) ? "" : config.decimal || ".";
+	// set alternative key as decimal point
+	var altDecimal = (config.altDecimal === false) ? "" : config.altDecimal || decimal;
 	// allow negatives
 	var negative = (config.negative === true) ? true : false;
-    // set decimal places
+	// set decimal places
 	var decimalPlaces = (typeof config.decimalPlaces == "undefined") ? -1 : config.decimalPlaces;
 	// callback function
 	callback = (typeof(callback) == "function" ? callback : function() {});
 	// set data and methods
-	return this.data("numeric.decimal", decimal).data("numeric.negative", negative).data("numeric.callback", callback).data("numeric.decimalPlaces", decimalPlaces).keypress($.fn.numeric.keypress).keyup($.fn.numeric.keyup).blur($.fn.numeric.blur);
+	return this.data("numeric.decimal", decimal).data("numeric.altDecimal", altDecimal).data("numeric.negative", negative).data("numeric.callback", callback).data("numeric.decimalPlaces", decimalPlaces).keypress($.fn.numeric.keypress).keyup($.fn.numeric.keyup).blur($.fn.numeric.blur);
 };
 
 $.fn.numeric.keypress = function(e)
@@ -58,7 +61,9 @@ $.fn.numeric.keypress = function(e)
 	// get decimal character and determine if negatives are allowed
 	var decimal = $.data(this, "numeric.decimal");
 	var negative = $.data(this, "numeric.negative");
-    var decimalPlaces = $.data(this, "numeric.decimalPlaces");
+	var decimalPlaces = $.data(this, "numeric.decimalPlaces");
+	// get an alternative decimal separator
+	var altDecimal = $.data(this, "numeric.altDecimal");
 	// get the key that was pressed
 	var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 	// allow enter/return key (only when in an input box)
@@ -131,8 +136,8 @@ $.fn.numeric.keypress = function(e)
 				}
 			}
 		}
-		// if key pressed is the decimal and it is not already in the field
-		if(decimal && key == decimal.charCodeAt(0))
+		// if key pressed is the decimal or altDecimal and decimal is not already in the field 
+		if(decimal && key == decimal.charCodeAt(0) || altDecimal && key == altDecimal.charCodeAt(0))
 		{
 			if($.inArray(decimal, value.split('')) == -1)
 			{
@@ -173,7 +178,9 @@ $.fn.numeric.keyup = function(e)
 		// get decimal character and determine if negatives are allowed
 		var decimal = $.data(this, "numeric.decimal");
 		var negative = $.data(this, "numeric.negative");
-        var decimalPlaces = $.data(this, "numeric.decimalPlaces");
+		var decimalPlaces = $.data(this, "numeric.decimalPlaces");
+		// get an alternative decimal separator
+		var altDecimal = $.data(this, "numeric.altDecimal");
 
 		// prepend a 0 if necessary
 		if(decimal !== "" && decimal !== null)
@@ -225,6 +232,12 @@ $.fn.numeric.keyup = function(e)
 					validChar = true;
 					break;
 				}
+			}
+			// if not a valid character and character is altDecimal, replace 
+			if(!validChar && ch == altDecimal)
+			{
+				val = val.substring(0, i) + decimal + val.substring(i + 1);
+				validChar = true;
 			}
 			// if not a valid character, or a space, remove
 			if(!validChar || ch == " ")
@@ -281,7 +294,7 @@ $.fn.numeric.blur = function()
 
 $.fn.removeNumeric = function()
 {
-	return this.data("numeric.decimal", null).data("numeric.negative", null).data("numeric.callback", null).data("numeric.decimalPlaces", null).unbind("keypress", $.fn.numeric.keypress).unbind("keyup", $.fn.numeric.keyup).unbind("blur", $.fn.numeric.blur);
+	return this.data("numeric.decimal", null).data("numeric.altDecimal", null).data("numeric.negative", null).data("numeric.callback", null).data("numeric.decimalPlaces", null).unbind("keypress", $.fn.numeric.keypress).unbind("keyup", $.fn.numeric.keyup).unbind("blur", $.fn.numeric.blur);
 };
 
 // Based on code from http://javascript.nwbox.com/cursor_position/ (Diego Perini <dperini@nwbox.com>)
